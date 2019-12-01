@@ -9,7 +9,7 @@ var (
 )
 
 func main() {
-	flag.StringVar(&listenAddr, "listen-addr", ":80", "server listen address")
+	flag.StringVar(&listenAddr, "listen-addr", "", "server listen address")
 	flag.Parse()
 
 	// bootstrap any other packages or components here.

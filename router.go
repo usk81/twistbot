@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -23,16 +24,18 @@ func router(logger *zap.Logger) *chi.Mux {
 	r.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("pong"))
 	})
-	r.Post("/bot", func(w http.ResponseWriter, r *http.Request) {
-		if r == nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("can not get request"))
-		}
-		defer r.Body.Close()
-		bs, _ := ioutil.ReadAll(r.Body)
-		w.Write(bs)
-	})
+	r.Post("/bot", botHandler)
 
 	logRoutes(r, logger)
 	return r
+}
+
+func botHandler(w http.ResponseWriter, r *http.Request) {
+	if r == nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("can not get request"))
+	}
+	defer r.Body.Close()
+	bs, _ := ioutil.ReadAll(r.Body)
+	w.Write([]byte(fmt.Sprintf("header: %s, body: %s", r.Header.Get("Content-Type"), string(bs))))
 }

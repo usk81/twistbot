@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"os"
 )
 
 var (
@@ -11,6 +12,11 @@ var (
 func main() {
 	flag.StringVar(&listenAddr, "listen-addr", "", "server listen address")
 	flag.Parse()
+
+	// for heroku
+	if listenAddr == "" && os.Getenv("PORT") != "" {
+		listenAddr = ":" + os.Getenv("PORT")
+	}
 
 	// bootstrap any other packages or components here.
 	// things like database connectivity or domain services

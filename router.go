@@ -23,6 +23,7 @@ type TwistOutgoingRequest struct {
 	ThreadID          int    `schema:"thread_id"`
 	ThreadTitle       string `schema:"thread_title"`
 	ChannelID         int    `schema:"channel_id"`
+	ChannelName       string `schema:"channel_name"`
 	CommentID         int    `schema:"comment_id"`
 	ConversationTitle string `schema:"conversation_title"`
 	VerifyToken       string `schema:"verify_token"`

@@ -25,6 +25,7 @@ type TwistOutgoingRequest struct {
 	ChannelID         int    `schema:"channel_id"`
 	CommentID         int    `schema:"comment_id"`
 	ConversationTitle string `schema:"conversation_title"`
+	VerifyToken       string `schema:"verify_token"`
 }
 
 var decoder = schema.NewDecoder()

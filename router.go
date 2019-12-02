@@ -20,11 +20,13 @@ type TwistOutgoingRequest struct {
 	UserName          string `schema:"user_name"`
 	URLCallback       string `schema:"url_callback"`
 	URLTTL            int    `schema:"url_ttl"`
+	MessageID         int    `schema:"message_id"`
 	ThreadID          int    `schema:"thread_id"`
 	ThreadTitle       string `schema:"thread_title"`
 	ChannelID         int    `schema:"channel_id"`
 	ChannelName       string `schema:"channel_name"`
 	CommentID         int    `schema:"comment_id"`
+	ConversationID    int    `schema:"conversation_id"`
 	ConversationTitle string `schema:"conversation_title"`
 	VerifyToken       string `schema:"verify_token"`
 }
@@ -68,11 +70,11 @@ func botHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	var req TwistOutgoingRequest
 	if err := decoder.Decode(&req, r.PostForm); err != nil {
-		lg.Error(fmt.Sprintf("fail to decode parsed request %s", err.Error()))
+		lg.Error(fmt.Sprintf("fail to decode parsed request %s : %#v", err.Error(), r.PostForm))
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	w.Write([]byte(fmt.Sprintf("%v", req)))
+	w.Write([]byte(fmt.Sprintf("%#v", req)))
 }
 
 func checkRequestHandler(w http.ResponseWriter, r *http.Request) {

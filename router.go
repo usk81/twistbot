@@ -74,7 +74,7 @@ func botHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	w.Write([]byte(fmt.Sprintf("%#v", req)))
+	w.Write([]byte(req.Content))
 }
 
 func checkRequestHandler(w http.ResponseWriter, r *http.Request) {

@@ -51,17 +51,23 @@ func router(logger *zap.Logger) *chi.Mux {
 }
 
 func botHandler(w http.ResponseWriter, r *http.Request) {
+	lg, _ := zap.NewProduction()
+	defer lg.Sync()
+
 	if r == nil {
+		lg.Error("can not get request")
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("can not get request"))
 	}
 	if err := r.ParseForm(); err != nil {
+		lg.Warn(fmt.Sprintf("failed to parse request %s", err.Error()))
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("request is invalid"))
 	}
 	var req TwistOutgoingRequest
 	if err := decoder.Decode(&req, r.PostForm); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		lg.Error(fmt.Sprintf("fail to decode parsed request %s", err.Error()))
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
 	w.Write([]byte(fmt.Sprintf("%v", req)))
